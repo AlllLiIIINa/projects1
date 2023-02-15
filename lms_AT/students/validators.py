@@ -13,6 +13,13 @@ def valid_email_domains(value):
         raise ValidationError(f'Email {value} has incorrect address.')
 
 
+def validate_unique_email(value):
+    valid_email = value
+    if students.models.Student.objects.filter(email=value).exists():
+        raise ValidationError(f'Email "{value}" already exists.')
+    return valid_email
+
+
 @deconstructible
 class ValidEmailDomain:
     def __init__(self, *domains):
