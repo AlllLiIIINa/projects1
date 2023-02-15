@@ -1,5 +1,6 @@
 django==4.1.1
 django-extensions==3.2.1
+Faker==17.0.0
 flake8==5.0.4
 flake8-builtins==1.5.3
 flake8-import-order==0.18.1
