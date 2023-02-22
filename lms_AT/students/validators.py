@@ -31,4 +31,4 @@ class ValidEmailDomain:
                 break
         else:
 
-            raise ValidationError(f'Invalid email address. The domain {args[0].split("@")} not valid.')
+            raise ValidationError(f'Invalid email address. The domain [{args[0]}] not valid.')
