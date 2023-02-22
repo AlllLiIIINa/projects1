@@ -27,6 +27,12 @@ class Student(models.Model):
     )
     birthday = models.DateField(default=date.today, null=True, blank=True)
     email = models.EmailField(validators=[ValidEmailDomain(*VALID_DOMAIN_LIST), validate_unique_email])
+    phone = models.CharField(
+        max_length=100,
+        verbose_name='phone number',
+        db_column='phone_number_c',
+        null=True, blank=True
+    )
 
     def __str__(self):
         return f'{self.pk} {self.first_name} {self.last_name}'
@@ -43,9 +49,10 @@ class Student(models.Model):
             last_name = f.last_name()
             email = f'{first_name}.{last_name}@{f.random.choice(VALID_DOMAIN_LIST)}'
             birthday = f.date()
-            st = cls(first_name=first_name, last_name=last_name, birthday=birthday, email=email)
+            phone = f.phone_number()
+            st = cls(first_name=first_name, last_name=last_name, birthday=birthday, email=email, phone=phone)
             try:
                 st.full_clean()
                 st.save()
             except ValidationError:
-                print(f'Incorrect data {first_name}, {last_name}, {birthday}, {email}')
+                print(f'Incorrect data {first_name}, {last_name}, {birthday}, {email}', {phone})

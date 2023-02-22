@@ -32,9 +32,9 @@ def get_students(request, args):
         )
 
     # if 'first_name' in args:
+    # if 'last_name' in args:
     #     students = students.filter(first_name=args['first_name'])
     #
-    # if 'last_name' in args:
     #     students = students.filter(last_name=args['last_name'])
 
     html = qs2html(students)
