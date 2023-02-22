@@ -1,10 +1,10 @@
-django==4.1.1
+django==4.1.7
 django-extensions==3.2.1
 Faker==17.0.0
-flake8==5.0.4
-flake8-builtins==1.5.3
-flake8-import-order==0.18.1
+flake8==6.0.0
+flake8-builtins==2.1.0
+flake8-import-order==0.18.2
 flake8-polyfill==1.0.2
-pep8-naming==0.13.2
-python-dotenv==0.21.0
-ipython==8.5.0
+pep8-naming==0.13.3
+python-dotenv==0.21.1
+ipython==8.10.0
