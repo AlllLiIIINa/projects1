@@ -55,4 +55,4 @@ class Student(models.Model):
                 st.full_clean()
                 st.save()
             except ValidationError:
-                print(f'Incorrect data {first_name}, {last_name}, {birthday}, {email}', {phone})
+                print(f'Incorrect data {first_name}, {last_name}, {birthday}, {email}, {phone}')
