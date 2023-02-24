@@ -36,13 +36,13 @@ class UpdateStudentForm(forms.ModelForm):
 
     def clean_first_name(self):
         value = self.cleaned_data.get('first_name')
-        value = value.title()
-        return value
+
+        return value.title()
 
     def clean_last_name(self):
         value = self.cleaned_data.get('last_name')
-        value = value.title()
-        return value
+
+        return value.title()
 
     def clean_birthday(self):
         value = self.cleaned_data.get('birthday')
