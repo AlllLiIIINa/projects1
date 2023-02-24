@@ -16,7 +16,7 @@ class CreateStudentForm(forms.ModelForm):
         ]
 
         widgets = {
-            'birthday': forms.DateInput(attrs={'type':'date'})
+            'birthday': forms.DateInput(attrs={'type': 'date'})
         }
 
 
@@ -30,6 +30,10 @@ class UpdateStudentForm(forms.ModelForm):
             'birthday',
             'phone',
         ]
+
+        widgets = {
+            'birthday': forms.DateInput(attrs={'type': 'date'})
+        }
 
     def clean(self):
         pass

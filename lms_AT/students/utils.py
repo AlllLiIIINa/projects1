@@ -10,5 +10,7 @@ def qs2html(qs_list):
             f'<td>{record.email}</td>' \
             f'<td>{record.phone}</td>' \
             f'<td><a href="update/{record.id}">Edit</a></td>' \
+            f'</tr>'
+    s += '</table>'
 
     return s

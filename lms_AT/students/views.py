@@ -6,7 +6,8 @@ from django.shortcuts import render
 from webargs.djangoparser import use_args
 from webargs.fields import Str
 
-from .forms import CreateStudentForm, UpdateStudentForm
+from .forms import CreateStudentForm
+from .forms import UpdateStudentForm
 from .models import Student
 # from .utils import qs2html
 
@@ -81,7 +82,7 @@ def update_student(request, student_id):
     if request.method == 'GET':
         form = UpdateStudentForm(instance=student)
     elif request.method == 'POST':
-        form = CreateStudentForm(request.POST, instance=student)
+        form = UpdateStudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/students/')
@@ -91,7 +92,7 @@ def update_student(request, student_id):
             <form method="post">
                 <input type="hidden" name="csrfmiddlewaretoken" value="{token}">
                 <table>
-                    {form.as_table()}
+                     {form.as_table()}
                 </table>
                 <input type="submit" value="Submit">
             </form>
