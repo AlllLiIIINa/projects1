@@ -1,14 +1,14 @@
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware.csrf import get_token
-from django.shortcuts import render  # noqa
+from django.shortcuts import render
 
 from webargs.djangoparser import use_args
 from webargs.fields import Str
 
-from .forms import CreateStudentForm
+from .forms import CreateStudentForm, UpdateStudentForm
 from .models import Student
-from .utils import qs2html
+# from .utils import qs2html
 
 
 # HttpRequest
@@ -37,11 +37,19 @@ def get_students(request, args):
     #
     #     students = students.filter(last_name=args['last_name'])
 
-    html = qs2html(students)
+    return render(
+        request=request,
+        template_name='students/list.html',
+        context={
+            'title': 'List of students',
+            'students': students
+        }
+    )
 
-    # HttpResponse
-    response = HttpResponse(html)
-    return response
+
+def detail_student(request, student_id):
+    student = Student.objects.get(pk=student_id)
+    return render(request, 'students/detail.html', {'student': student})
 
 
 def create_student(request):
@@ -49,6 +57,31 @@ def create_student(request):
         form = CreateStudentForm()
     elif request.method == 'POST':
         form = CreateStudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/students/')
+
+    token = get_token(request)
+    html_form = f"""
+            <form method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{token}">
+                <table>
+                    {form.as_table()}
+                </table>
+                <input type="submit" value="Submit">
+            </form>
+        """
+
+    return HttpResponse(html_form)
+
+
+def update_student(request, student_id):
+    student = Student.objects.get(pk=student_id)
+
+    if request.method == 'GET':
+        form = UpdateStudentForm(instance=student)
+    elif request.method == 'POST':
+        form = CreateStudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/students/')
