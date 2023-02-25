@@ -25,4 +25,4 @@ class Group(models.Model):
         return f'{self.name} {self.description} {self.start}'
 
     class Meta:
-        db_table = 'groups_table'
+        db_table = 'groups'
