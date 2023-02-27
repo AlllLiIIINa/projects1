@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.middleware.csrf import get_token
 from django.shortcuts import render
+from django.shortcuts import render  # noqa
 
 from teachers.forms import UpdateTeacherForm
 from teachers.models import Teacher
