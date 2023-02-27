@@ -1,13 +1,13 @@
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-
-from django.shortcuts import render
 from django.middleware.csrf import get_token
+from django.shortcuts import render
+
+from groups.forms import UpdateGroupForm
+from groups.models import Group
+
 from webargs.djangoparser import use_args
 from webargs.fields import Str
-
-from groups.models import Group
-from groups.forms import UpdateGroupForm
 
 
 @use_args(

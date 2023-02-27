@@ -2,7 +2,7 @@
 
 import datetime
 from django.db import migrations, models
-import students.validators
+import core.validators
 
 
 class Migration(migrations.Migration):
@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='student',
             name='email',
-            field=models.EmailField(max_length=254, validators=[students.validators.ValidEmailDomain('@gmail.com', '@yahoo.com')]),
+            field=models.EmailField(max_length=254, validators=[core.validators.ValidEmailDomain('@gmail.com', '@yahoo.com')]),
         ),
         migrations.AlterModelTable(
             name='student',
