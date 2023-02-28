@@ -19,24 +19,12 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 
-from groups.views import detail_groups
-from groups.views import get_groups
-from groups.views import update_groups
-
-from teachers.views import detail_teachers
-from teachers.views import get_teachers
-from teachers.views import update_teachers
-
 # CRUD Create, Read< Update, Delete
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='home'),
     path('students/', include('students.urls')),
-    path('groups/', get_groups),
-    path('groups/detail/<int:group_id>/', detail_groups),
-    path('groups/update/<int:group_id>/', update_groups),
-    path('teachers/', get_teachers),
-    path('teachers/detail/<int:teacher_id>/', detail_teachers),
-    path('teachers/update/<int:teacher_id>/', update_teachers),
+    path('groups/', include('groups.urls')),
+    path('teachers/', include('teachers.urls')),
 ]

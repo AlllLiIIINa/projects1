@@ -3,6 +3,17 @@ from django import forms
 from groups.models import Group
 
 
+class CreateGroupForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = [
+            # '__all__'
+            'name',
+            'description',
+            'start',
+        ]
+
+
 class UpdateGroupForm(forms.ModelForm):
     class Meta:
         model = Group
