@@ -1,8 +1,10 @@
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.middleware.csrf import get_token
+# from django.middleware.csrf import get_token
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+from django.urls import reverse
 
+from groups.forms import CreateGroupForm
 from groups.forms import UpdateGroupForm
 from groups.models import Group
 
@@ -37,8 +39,20 @@ def detail_groups(request, group_id):
     return render(request, 'groups/detail.html', {'group': group})
 
 
+def create_groups(request):
+    if request.method == 'GET':
+        form = CreateGroupForm()
+    elif request.method == 'POST':
+        form = CreateGroupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('groups:list'))
+
+    return render(request, 'groups/create.html', {'form': form})
+
+
 def update_groups(request, group_id):
-    group = Group.objects.get(pk=group_id)
+    group = get_object_or_404(Group, pk=group_id)
 
     if request.method == 'GET':
         form = UpdateGroupForm(instance=group)
@@ -46,17 +60,16 @@ def update_groups(request, group_id):
         form = UpdateGroupForm(request.POST, instance=group)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/groups/')
+            return HttpResponseRedirect(reverse('groups:list'))
 
-    token = get_token(request)
-    html_form = f"""
-            <form method="post">
-                <input type="hidden" name="csrfmiddlewaretoken" value="{token}">
-                <table>
-                     {form.as_table()}
-                </table>
-                <input type="submit" value="Submit">
-            </form>
-        """
+    return render(request, 'groups/update.html', {'form': form})
 
-    return HttpResponse(html_form)
+
+def delete_groups(request, group_id):
+    group = get_object_or_404(Group, pk=group_id)
+
+    if request.method == 'POST':
+        group.delete()
+        return HttpResponseRedirect(reverse('groups:list'))
+
+    return render(request, 'groups/delete.html', {'group': group})

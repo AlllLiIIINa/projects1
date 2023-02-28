@@ -13,13 +13,16 @@
         <input type="submit" value="Submit">
     </form>
     <br>
+    <a href="{% url 'teachers:create' %}">Create a new teacher</a>
+    <br><br>
     <table>
     {% for teacher in teachers %}
         <tr>
             <td>{{ teacher.pk }}</td>
-            <td><a href="detail/{{ teacher.pk }}/">{{ teacher.first_name }}</a></td>
+            <td><a href="{% url 'teachers:detail' teacher.pk %}">{{ teacher.first_name }}</a></td>
             <td>{{ teacher.last_name }}</td>
-            <td><a href="update/{{ teacher.pk }}/">Edit</a></td>
+            <td><a href="{% url 'teachers:update' teacher.pk %}">Edit</a></td>
+            <td><a href="{% url 'teachers:delete' teacher.pk %}">Delete</a></td>
         </tr>
     {% endfor %}
     </table>
