@@ -15,4 +15,3 @@ urlpatterns = [
     path('detail/<int:group_id>/', detail_groups, name='detail'),   # Read G
     path('update/<int:group_id>/', update_groups, name='update'),   # Update G
     path('delete/<int:group_id>/', delete_groups, name='delete'),   # Delete G
-]
