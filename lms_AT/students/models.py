@@ -11,6 +11,7 @@ from django.db import models
 
 from faker import Faker
 
+from groups.models import Group
 
 VALID_DOMAIN_LIST = ('gmail.com', 'yahoo.com')
 
@@ -37,6 +38,9 @@ class Student(models.Model):
         db_column='phone_number_c',
         null=True, blank=True
     )
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name='students')
+    create_datetime = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return f'{self.pk} {self.first_name} {self.last_name}'

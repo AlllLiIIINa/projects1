@@ -1,48 +1,48 @@
-from django.db.models import Q
+# from django.db.models import Q
 from django.http import HttpResponseRedirect
-# from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
 
-from webargs.djangoparser import use_args
-from webargs.fields import Str
+# from webargs.djangoparser import use_args
+# from webargs.fields import Str
 
 from .forms import CreateStudentForm
+from .forms import StudentFilterForm
 from .forms import UpdateStudentForm
 from .models import Student
 
 
-# from .utils import qs2html
-
-
-@use_args(
-    {
-        'first_name': Str(required=False),
-        'last_name': Str(required=False),
-    },
-    location='query'
-)
-def get_students(request, args):
+# @use_args(
+#     {
+#         'first_name': Str(required=False),
+#         'last_name': Str(required=False),
+#     },
+#     location='query'
+# )
+def get_students(request):
     students = Student.objects.all()
 
-    if len(args) != 0 and args.get('first_name') or args.get('last_name'):
-        students = students.filter(
-            Q(first_name=args.get('first_name', '')) | Q(last_name=args.get('last_name', ''))
-        )
+    filter_form = StudentFilterForm(data=request.GET, queryset=students)
 
-    # if 'first_name' in args:
-    # if 'last_name' in args:
-    #     students = students.filter(first_name=args['first_name'])
+    # if len(args) != 0 and args.get('first_name') or args.get('last_name'):
+    #     students = students.filter(
+    #         Q(first_name=args.get('first_name', '')) | Q(last_name=args.get('last_name', ''))
+    #     )
     #
-    #     students = students.filter(last_name=args['last_name'])
-
+    # # if 'first_name' in args:
+    # # if 'last_name' in args:
+    # #     students = students.filter(first_name=args['first_name'])
+    # #
+    # #     students = students.filter(last_name=args['last_name'])
+    #
     return render(
         request=request,
         template_name='students/list.html',
         context={
-            'title': 'List of students',
-            'students': students
+            # 'title': 'List of students',
+            # 'students': students
+            'filter_form': filter_form
         }
     )
 
