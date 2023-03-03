@@ -37,6 +37,8 @@ class Teacher(models.Model):
         db_column='phone_number_c',
         null=True, blank=True
     )
+    create_datetime = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return f'{self.pk} {self.first_name} {self.last_name}'
@@ -57,9 +59,12 @@ class Teacher(models.Model):
             email = f'{first_name}.{last_name}@{f.random.choice(VALID_DOMAIN_LIST)}'
             birthday = f.date()
             phone = f.phone_number()
+            create_datetime = date.today
+            update_date = date.today
             st = cls(first_name=first_name, last_name=last_name, birthday=birthday, email=email, phone=phone)
             try:
                 st.full_clean()
                 st.save()
             except ValidationError:
-                print(f'Incorrect data {first_name}, {last_name}, {birthday}, {email}, {phone}')
+                print(f'Incorrect data {first_name}, {last_name}, {birthday}, {email}, {phone}, {create_datetime}, '
+                      f'{update_date}')

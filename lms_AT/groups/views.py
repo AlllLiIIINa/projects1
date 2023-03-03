@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from groups.forms import GroupCreateForm
+from groups.forms import GroupFilterForm
 from groups.forms import GroupUpdateForm
 from groups.models import Group
 
@@ -14,7 +15,9 @@ from groups.models import Group
 
 def get_groups(request):
     groups = Group.objects.all()
-    return render(request, 'groups/list.html', {'groups': groups})
+
+    filter_form = GroupFilterForm(data=request.GET, queryset=groups)
+    return render(request, 'groups/list.html', {'filter_form': filter_form})
 
 
 def detail_groups(request, group_id):

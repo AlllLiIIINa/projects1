@@ -1,41 +1,24 @@
-from django.db.models import Q
+# from django.db.models import Q
 from django.http import HttpResponseRedirect
 # from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
 
-from teachers.forms import CreateTeacherForm
-from teachers.forms import UpdateTeacherForm
+from teachers.forms import TeacherCreateForm
+from teachers.forms import TeacherFilterForm
+from teachers.forms import TeacherUpdateForm
 from teachers.models import Teacher
 
-from webargs.djangoparser import use_args
-from webargs.fields import Str
+# from webargs.djangoparser import use_args
+# from webargs.fields import Str
 
 
-@use_args(
-    {
-        'first_name': Str(required=False),
-        'last_name': Str(required=False),
-    },
-    location='query'
-)
-def get_teachers(request, args):
+def get_teachers(request):
     teachers = Teacher.objects.all()
 
-    if len(args) != 0 and args.get('first_name') or args.get('last_name'):
-        teachers = teachers.filter(
-            Q(first_name=args.get('first_name', '')) | Q(last_name=args.get('last_name', ''))
-        )
-
-    return render(
-            request=request,
-            template_name='teachers/list.html',
-            context={
-                'title': 'List of teachers',
-                'teachers': teachers
-            }
-        )
+    filter_form = TeacherFilterForm(data=request.GET, queryset=teachers)
+    return render(request, 'teachers/list.html', {'filter_form': filter_form})
 
 
 def detail_teachers(request, teacher_id):
@@ -45,9 +28,9 @@ def detail_teachers(request, teacher_id):
 
 def create_teachers(request):
     if request.method == 'GET':
-        form = CreateTeacherForm()
+        form = TeacherCreateForm()
     elif request.method == 'POST':
-        form = CreateTeacherForm(request.POST)
+        form = TeacherCreateForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('teachers:list'))
@@ -57,16 +40,14 @@ def create_teachers(request):
 
 def update_teachers(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
-
-    if request.method == 'GET':
-        form = UpdateTeacherForm(instance=teacher)
-    elif request.method == 'POST':
-        form = UpdateTeacherForm(request.POST, instance=teacher)
+    if request.method == 'POST':
+        form = TeacherUpdateForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('teachers:list'))
 
-    return render(request, 'teachers/update.html', {'form': form})
+    form = TeacherUpdateForm(instance=teacher)
+    return render(request, 'teachers/update.html', {'form': form, 'teacher': teacher})
 
 
 def delete_teachers(request, teacher_id):
