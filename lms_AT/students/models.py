@@ -61,9 +61,12 @@ class Student(models.Model):
             email = f'{first_name}.{last_name}@{f.random.choice(VALID_DOMAIN_LIST)}'
             birthday = f.date()
             phone = f.phone_number()
+            create_datetime = date.today
+            update_date = date.today
             st = cls(first_name=first_name, last_name=last_name, birthday=birthday, email=email, phone=phone)
             try:
                 st.full_clean()
                 st.save()
             except ValidationError:
-                print(f'Incorrect data {first_name}, {last_name}, {birthday}, {email}, {phone}')
+                print(f'Incorrect data {first_name}, {last_name}, {birthday}, {email}, {phone}, {create_datetime}, '
+                      f'{update_date}')

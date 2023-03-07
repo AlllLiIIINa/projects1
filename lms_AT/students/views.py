@@ -7,9 +7,9 @@ from django.urls import reverse
 # from webargs.djangoparser import use_args
 # from webargs.fields import Str
 
-from .forms import CreateStudentForm
+from .forms import StudentCreateForm
 from .forms import StudentFilterForm
-from .forms import UpdateStudentForm
+from .forms import StudentUpdateForm
 from .models import Student
 
 
@@ -36,15 +36,7 @@ def get_students(request):
     # #
     # #     students = students.filter(last_name=args['last_name'])
     #
-    return render(
-        request=request,
-        template_name='students/list.html',
-        context={
-            # 'title': 'List of students',
-            # 'students': students
-            'filter_form': filter_form
-        }
-    )
+    return render(request, 'students/list.html', {'filter_form': filter_form})
 
 
 def detail_students(request, student_id):
@@ -54,9 +46,9 @@ def detail_students(request, student_id):
 
 def create_students(request):
     if request.method == 'GET':
-        form = CreateStudentForm()
+        form = StudentCreateForm()
     elif request.method == 'POST':
-        form = CreateStudentForm(request.POST)
+        form = StudentCreateForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('students:list'))
@@ -66,16 +58,14 @@ def create_students(request):
 
 def update_students(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-
-    if request.method == 'GET':
-        form = UpdateStudentForm(instance=student)
-    elif request.method == 'POST':
-        form = UpdateStudentForm(request.POST, instance=student)
+    if request.method == 'POST':
+        form = StudentUpdateForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('students:list'))
 
-    return render(request, 'students/update.html', {'form': form})
+    form = StudentUpdateForm(instance=student)
+    return render(request, 'students/update.html', {'form': form, 'student': student})
 
 
 def delete_students(request, student_id):
